@@ -52,7 +52,7 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False)
     comment = db.Column(db.UnicodeText(1024*1024))
     email = db.Column(db.String(30))
-    file = db.Column(db.String(50))
+    filename = db.Column(db.String(50))
 
     thread = db.relationship(Thread, backref="posts", single_parent=True,
         cascade="all, delete, delete-orphan")
