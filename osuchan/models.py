@@ -20,7 +20,9 @@ class Board(db.Model):
 
     name = db.Column(db.Unicode(30))
     abbreviation = db.Column(db.String(5), primary_key=True)
-    category = db.Column(db.Unicode(30), db.ForeignKey(Category.title))
+    category_fk = db.Column(db.Unicode(30), db.ForeignKey(Category.title))
+
+    category = db.relationship(Category, backref="boards")
 
     def __init__(self, abbreviation, name):
         self.abbreviation = abbreviation
@@ -32,7 +34,9 @@ class Thread(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.Unicode(50))
     author = db.Column(db.Unicode(30))
-    board = db.Column(db.String(5), db.ForeignKey(Board.abbreviation))
+    board_fk = db.Column(db.String(5), db.ForeignKey(Board.abbreviation))
+
+    board = db.relationship(Board, backref="threads")
 
     def __init__(self, board, subject, author):
         self.board = board
@@ -66,6 +70,8 @@ class File(db.Model):
 
     postid = db.Column(db.Integer, db.ForeignKey(Post.id))
     filename = db.Column(db.String(50), primary_key=True)
+
+    post = db.relationship(Post, backref="file", uselist=False)
 
 if __name__ == "__main__":
     from sqlalchemy import create_engine
